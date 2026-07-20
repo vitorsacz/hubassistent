@@ -45,6 +45,12 @@ Depois rode as migrations:
 pnpm db:migrate
 ```
 
+E popule as categorias padrão (Alimentação, Transporte, Salário, etc.):
+
+```bash
+pnpm db:seed
+```
+
 ### Variáveis de ambiente
 
 `apps/api/.env`:
@@ -84,7 +90,7 @@ pnpm build       # build de produção de todos os pacotes
 
 - [x] Fase 0 — scaffold do monorepo
 - [x] Fase 1 — autenticação (registro, login, refresh token)
-- [ ] Fase 2 — núcleo financeiro (contas, cartões, categorias, transações)
+- [x] Fase 2 — núcleo financeiro (contas, cartões, categorias, transações)
 - [ ] Fase 3 — faturas/contas a pagar + dashboard
 - [ ] Fase 4 — módulo de rotina/calendário
 - [ ] Fase 5 — importação Open Finance

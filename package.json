@@ -12,7 +12,8 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "db:migrate": "pnpm --filter @hubassistent/api prisma migrate dev",
-    "db:generate": "pnpm --filter @hubassistent/api prisma generate"
+    "db:generate": "pnpm --filter @hubassistent/api prisma generate",
+    "db:seed": "pnpm --filter @hubassistent/api db:seed"
   },
   "devDependencies": {
     "turbo": "^2.3.0",

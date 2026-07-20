@@ -5,6 +5,10 @@ import { validateEnv } from "./config/env.validation";
 import { PrismaModule } from "./prisma/prisma.module";
 import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
 import { AuthModule } from "./modules/auth/auth.module";
+import { AccountsModule } from "./modules/accounts/accounts.module";
+import { CardsModule } from "./modules/cards/cards.module";
+import { CategoriesModule } from "./modules/categories/categories.module";
+import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { HealthController } from "./modules/health/health.controller";
 
 @Module({
@@ -15,6 +19,10 @@ import { HealthController } from "./modules/health/health.controller";
     }),
     PrismaModule,
     AuthModule,
+    AccountsModule,
+    CardsModule,
+    CategoriesModule,
+    TransactionsModule,
   ],
   controllers: [HealthController],
   providers: [

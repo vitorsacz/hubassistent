@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UsePipes } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from "@hubassistent/shared-types";
 import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
@@ -15,8 +15,10 @@ export class AuthController {
 
   @Public()
   @Post("register")
-  @UsePipes(new ZodValidationPipe(registerSchema))
-  async register(@Body() body: RegisterInput, @Res({ passthrough: true }) res: Response) {
+  async register(
+    @Body(new ZodValidationPipe(registerSchema)) body: RegisterInput,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { accessToken, refreshToken } = await this.authService.register(body);
     this.setRefreshCookie(res, refreshToken);
     return { accessToken };
@@ -24,8 +26,10 @@ export class AuthController {
 
   @Public()
   @Post("login")
-  @UsePipes(new ZodValidationPipe(loginSchema))
-  async login(@Body() body: LoginInput, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @Body(new ZodValidationPipe(loginSchema)) body: LoginInput,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { accessToken, refreshToken } = await this.authService.login(body);
     this.setRefreshCookie(res, refreshToken);
     return { accessToken };
