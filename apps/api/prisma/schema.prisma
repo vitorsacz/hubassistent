@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  accounts     Account[]
+  cards        Card[]
+  transactions Transaction[]
+  invoices     Invoice[]
+  categories   Category[]
+}
+
+model Account {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      AccountType
+  currency  String      @default("BRL")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  cards        Card[]
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Card {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId  String?
+  account    Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  name       String
+  brand      String?
+  type       CardType
+  closingDay Int?
+  dueDay     Int?
+  limit      Decimal? @db.Decimal(12, 2)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  transactions Transaction[]
+  invoices     Invoice[]
+
+  @@index([userId])
+}
+
+model Category {
+  id     String       @id @default(cuid())
+  userId String?
+  user   User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name   String
+  type   CategoryType
+  icon   String?
+  color  String?
+
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Transaction {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId   String?
+  account     Account?          @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  cardId      String?
+  card        Card?             @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  invoiceId   String?
+  invoice     Invoice?          @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  categoryId  String?
+  category    Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  type        TransactionType
+  method      PaymentMethod
+  amount      Decimal           @db.Decimal(12, 2)
+  description String
+  date        DateTime
+  notes       String?
+
+  source     TransactionSource @default(MANUAL)
+  externalId String?
+  importedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, externalId])
+  @@index([userId, date])
+  @@index([cardId])
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardId         String?
+  card           Card?         @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  referenceMonth DateTime
+  dueDate        DateTime
+  amount         Decimal?      @db.Decimal(12, 2)
+  status         InvoiceStatus @default(OPEN)
+  paidAt         DateTime?
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, referenceMonth])
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  WALLET
+}
+
+enum CardType {
+  CREDIT
+  DEBIT
+}
+
+enum CategoryType {
+  EXPENSE
+  INCOME
+}
+
+enum TransactionType {
+  EXPENSE
+  INCOME
+}
+
+enum PaymentMethod {
+  PIX
+  DEBIT
+  CREDIT
+  CASH
+  TRANSFER
+  BOLETO
+}
+
+enum TransactionSource {
+  MANUAL
+  IMPORT
+}
+
+enum InvoiceStatus {
+  OPEN
+  PAID
+  OVERDUE
+}
