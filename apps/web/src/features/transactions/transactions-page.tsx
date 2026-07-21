@@ -50,8 +50,8 @@ export function TransactionsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Transações</h1>
+    <div className="space-y-8">
+      <h1 className="font-display text-2xl italic text-ink">Transações</h1>
 
       <TransactionForm
         key={formKey}
@@ -64,58 +64,66 @@ export function TransactionsPage() {
         isSubmitting={createTransaction.isPending || updateTransaction.isPending}
       />
 
-      <div className="overflow-x-auto rounded-xl bg-slate-900">
+      <div className="overflow-x-auto rounded border border-line bg-surface">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-slate-800 text-slate-400">
+          <thead>
             <tr>
-              <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3">Descrição</th>
-              <th className="px-4 py-3">Categoria</th>
-              <th className="px-4 py-3">Método</th>
-              <th className="px-4 py-3 text-right">Valor</th>
-              <th className="px-4 py-3"></th>
+              <th className="border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                Data
+              </th>
+              <th className="border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                Descrição
+              </th>
+              <th className="border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                Categoria
+              </th>
+              <th className="border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                Método
+              </th>
+              <th className="border-b border-line px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted">
+                Valor
+              </th>
+              <th className="border-b border-line px-5 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-slate-500">
+                <td colSpan={6} className="px-5 py-8 text-center text-muted">
                   Carregando…
                 </td>
               </tr>
             )}
             {!isLoading && transactions?.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-slate-500">
+                <td colSpan={6} className="px-5 py-8 text-center text-muted">
                   Nenhuma transação ainda.
                 </td>
               </tr>
             )}
             {transactions?.map((tx) => (
-              <tr key={tx.id} className="border-b border-slate-800/50">
-                <td className="px-4 py-3 text-slate-400">{formatDate(tx.date)}</td>
-                <td className="px-4 py-3">{tx.description}</td>
-                <td className="px-4 py-3 text-slate-400">{categoryLabel(tx.categoryId)}</td>
-                <td className="px-4 py-3 text-slate-400">{tx.method}</td>
+              <tr key={tx.id} className="border-b border-line last:border-0">
+                <td className="px-5 py-3 text-muted">{formatDate(tx.date)}</td>
+                <td className="px-5 py-3 text-ink">{tx.description}</td>
+                <td className="px-5 py-3">
+                  <span className="rounded-sm border border-line px-2.5 py-1 text-xs text-muted">
+                    {categoryLabel(tx.categoryId)}
+                  </span>
+                </td>
+                <td className="px-5 py-3 text-muted">{tx.method}</td>
                 <td
-                  className={`px-4 py-3 text-right font-medium ${
-                    tx.type === "INCOME" ? "text-emerald-400" : "text-red-400"
+                  className={`tabular px-5 py-3 text-right font-medium ${
+                    tx.type === "INCOME" ? "text-good" : "text-ink"
                   }`}
                 >
-                  {tx.type === "INCOME" ? "+" : "-"}
+                  {tx.type === "INCOME" ? "+" : "−"}
                   {formatCurrency(tx.amount)}
                 </td>
-                <td className="px-4 py-3 text-right">
-                  <button
-                    onClick={() => setEditing(tx)}
-                    className="mr-3 text-indigo-400 hover:underline"
-                  >
+                <td className="px-5 py-3 text-right text-xs">
+                  <button onClick={() => setEditing(tx)} className="mr-3 text-accent hover:underline">
                     Editar
                   </button>
-                  <button
-                    onClick={() => deleteTransaction.mutate(tx.id)}
-                    className="text-red-400 hover:underline"
-                  >
+                  <button onClick={() => deleteTransaction.mutate(tx.id)} className="text-bad hover:underline">
                     Excluir
                   </button>
                 </td>

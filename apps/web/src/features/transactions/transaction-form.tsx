@@ -17,6 +17,10 @@ interface TransactionFormProps {
   isSubmitting: boolean;
 }
 
+const fieldLabel = "mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted";
+const fieldInput =
+  "w-full rounded-md border border-line bg-app px-3 py-2 text-ink outline-none transition-colors focus:border-accent";
+
 function toDateInputValue(date: string | Date) {
   const d = new Date(date);
   return d.toISOString().slice(0, 10);
@@ -78,29 +82,23 @@ export function TransactionForm({
   return (
     <form
       onSubmit={handleSubmit((data) => onSubmit(data))}
-      className="grid grid-cols-1 gap-4 rounded-xl bg-slate-900 p-6 sm:grid-cols-2"
+      className="grid grid-cols-1 gap-4 rounded border border-line bg-surface p-6 sm:grid-cols-2"
     >
-      <h2 className="col-span-full text-lg font-semibold">
+      <h2 className="col-span-full font-display text-lg italic text-ink">
         {editing ? "Editar transação" : "Nova transação"}
       </h2>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Tipo</label>
-        <select
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("type")}
-        >
+        <label className={fieldLabel}>Tipo</label>
+        <select className={fieldInput} {...register("type")}>
           <option value="EXPENSE">Saída</option>
           <option value="INCOME">Entrada</option>
         </select>
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Método</label>
-        <select
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("method")}
-        >
+        <label className={fieldLabel}>Método</label>
+        <select className={fieldInput} {...register("method")}>
           <option value="PIX">Pix</option>
           <option value="DEBIT">Débito</option>
           <option value="CREDIT">Crédito</option>
@@ -111,44 +109,37 @@ export function TransactionForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Valor</label>
+        <label className={fieldLabel}>Valor</label>
         <input
           type="number"
           step="0.01"
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
+          className={fieldInput}
           {...register("amount", { valueAsNumber: true })}
         />
-        {errors.amount && <p className="mt-1 text-sm text-red-400">{errors.amount.message}</p>}
+        {errors.amount && <p className="mt-1.5 text-sm text-bad">{errors.amount.message}</p>}
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Data</label>
+        <label className={fieldLabel}>Data</label>
         <input
           type="date"
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
+          className={fieldInput}
           value={toDateInputValue(watch("date") ?? new Date())}
           onChange={(e) => setValue("date", new Date(`${e.target.value}T00:00:00`))}
         />
       </div>
 
       <div className="col-span-full">
-        <label className="mb-1 block text-sm text-slate-300">Descrição</label>
-        <input
-          type="text"
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("description")}
-        />
+        <label className={fieldLabel}>Descrição</label>
+        <input type="text" className={fieldInput} {...register("description")} />
         {errors.description && (
-          <p className="mt-1 text-sm text-red-400">{errors.description.message}</p>
+          <p className="mt-1.5 text-sm text-bad">{errors.description.message}</p>
         )}
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Categoria</label>
-        <select
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("categoryId", { setValueAs: (v) => v || undefined })}
-        >
+        <label className={fieldLabel}>Categoria</label>
+        <select className={fieldInput} {...register("categoryId", { setValueAs: (v) => v || undefined })}>
           <option value="">Nenhuma</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
@@ -159,11 +150,8 @@ export function TransactionForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Conta</label>
-        <select
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("accountId", { setValueAs: (v) => v || undefined })}
-        >
+        <label className={fieldLabel}>Conta</label>
+        <select className={fieldInput} {...register("accountId", { setValueAs: (v) => v || undefined })}>
           <option value="">Nenhuma</option>
           {accounts.map((a) => (
             <option key={a.id} value={a.id}>
@@ -174,11 +162,8 @@ export function TransactionForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-slate-300">Cartão</label>
-        <select
-          className="w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-          {...register("cardId", { setValueAs: (v) => v || undefined })}
-        >
+        <label className={fieldLabel}>Cartão</label>
+        <select className={fieldInput} {...register("cardId", { setValueAs: (v) => v || undefined })}>
           <option value="">Nenhum</option>
           {cards.map((c) => (
             <option key={c.id} value={c.id}>
@@ -192,7 +177,7 @@ export function TransactionForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-md bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-500 disabled:opacity-50"
+          className="rounded-md bg-accent px-4 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {editing ? "Salvar" : "Adicionar"}
         </button>
@@ -200,7 +185,7 @@ export function TransactionForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md border border-slate-700 px-4 py-2 text-slate-300 hover:bg-slate-800"
+            className="rounded-md border border-line px-4 py-2 text-muted transition-colors hover:text-ink"
           >
             Cancelar
           </button>

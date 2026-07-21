@@ -9,6 +9,10 @@ import {
 import { useAccounts, useCreateAccount, useDeleteAccount } from "@/features/accounts/api";
 import { useCategories, useCreateCategory, useDeleteCategory } from "@/features/categories/api";
 
+const fieldLabel = "mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted";
+const fieldInput =
+  "rounded-md border border-line bg-app px-3 py-2 text-ink outline-none transition-colors focus:border-accent";
+
 function AccountsSection() {
   const { data: accounts = [], isLoading } = useAccounts();
   const createAccount = useCreateAccount();
@@ -30,22 +34,17 @@ function AccountsSection() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Contas</h2>
+      <h2 className="font-display text-xl italic text-ink">Contas</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-3 rounded-xl bg-slate-900 p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-3 rounded border border-line bg-surface p-6">
         <div>
-          <label className="mb-1 block text-sm text-slate-300">Nome</label>
-          <input
-            type="text"
-            placeholder="Nubank Conta"
-            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-            {...register("name")}
-          />
-          {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>}
+          <label className={fieldLabel}>Nome</label>
+          <input type="text" placeholder="Nubank Conta" className={fieldInput} {...register("name")} />
+          {errors.name && <p className="mt-1.5 text-sm text-bad">{errors.name.message}</p>}
         </div>
         <div>
-          <label className="mb-1 block text-sm text-slate-300">Tipo</label>
-          <select className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2" {...register("type")}>
+          <label className={fieldLabel}>Tipo</label>
+          <select className={fieldInput} {...register("type")}>
             <option value="CHECKING">Conta corrente</option>
             <option value="SAVINGS">Poupança</option>
             <option value="CASH">Dinheiro</option>
@@ -55,19 +54,22 @@ function AccountsSection() {
         <button
           type="submit"
           disabled={createAccount.isPending}
-          className="rounded-md bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-500 disabled:opacity-50"
+          className="rounded-md bg-accent px-4 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           Adicionar
         </button>
       </form>
 
-      <div className="rounded-xl bg-slate-900 p-2">
-        {isLoading && <p className="p-4 text-slate-500">Carregando…</p>}
-        {!isLoading && accounts.length === 0 && <p className="p-4 text-slate-500">Nenhuma conta ainda.</p>}
-        {accounts.map((account) => (
-          <div key={account.id} className="flex items-center justify-between rounded-md px-4 py-3 hover:bg-slate-800/50">
-            <span>{account.name}</span>
-            <button onClick={() => deleteAccount.mutate(account.id)} className="text-red-400 hover:underline">
+      <div className="rounded border border-line bg-surface">
+        {isLoading && <p className="p-4 text-muted">Carregando…</p>}
+        {!isLoading && accounts.length === 0 && <p className="p-4 text-muted">Nenhuma conta ainda.</p>}
+        {accounts.map((account, i) => (
+          <div
+            key={account.id}
+            className={`flex items-center justify-between px-5 py-3 ${i > 0 ? "border-t border-line" : ""}`}
+          >
+            <span className="text-ink">{account.name}</span>
+            <button onClick={() => deleteAccount.mutate(account.id)} className="text-xs text-bad hover:underline">
               Excluir
             </button>
           </div>
@@ -98,22 +100,17 @@ function CategoriesSection() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Categorias</h2>
+      <h2 className="font-display text-xl italic text-ink">Categorias</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-3 rounded-xl bg-slate-900 p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-3 rounded border border-line bg-surface p-6">
         <div>
-          <label className="mb-1 block text-sm text-slate-300">Nome</label>
-          <input
-            type="text"
-            placeholder="Assinaturas"
-            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2"
-            {...register("name")}
-          />
-          {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>}
+          <label className={fieldLabel}>Nome</label>
+          <input type="text" placeholder="Assinaturas" className={fieldInput} {...register("name")} />
+          {errors.name && <p className="mt-1.5 text-sm text-bad">{errors.name.message}</p>}
         </div>
         <div>
-          <label className="mb-1 block text-sm text-slate-300">Tipo</label>
-          <select className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2" {...register("type")}>
+          <label className={fieldLabel}>Tipo</label>
+          <select className={fieldInput} {...register("type")}>
             <option value="EXPENSE">Saída</option>
             <option value="INCOME">Entrada</option>
           </select>
@@ -121,24 +118,25 @@ function CategoriesSection() {
         <button
           type="submit"
           disabled={createCategory.isPending}
-          className="rounded-md bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-500 disabled:opacity-50"
+          className="rounded-md bg-accent px-4 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           Adicionar
         </button>
       </form>
 
-      <div className="rounded-xl bg-slate-900 p-2">
-        {isLoading && <p className="p-4 text-slate-500">Carregando…</p>}
-        {categories.map((category) => (
-          <div key={category.id} className="flex items-center justify-between rounded-md px-4 py-3 hover:bg-slate-800/50">
-            <span>
+      <div className="rounded border border-line bg-surface">
+        {isLoading && <p className="p-4 text-muted">Carregando…</p>}
+        {categories.map((category, i) => (
+          <div
+            key={category.id}
+            className={`flex items-center justify-between px-5 py-3 ${i > 0 ? "border-t border-line" : ""}`}
+          >
+            <span className="text-ink">
               {category.icon} {category.name}
-              {category.userId === null && (
-                <span className="ml-2 text-xs text-slate-500">(padrão)</span>
-              )}
+              {category.userId === null && <span className="ml-2 text-xs text-muted">(padrão)</span>}
             </span>
             {category.userId !== null && (
-              <button onClick={() => deleteCategory.mutate(category.id)} className="text-red-400 hover:underline">
+              <button onClick={() => deleteCategory.mutate(category.id)} className="text-xs text-bad hover:underline">
                 Excluir
               </button>
             )}
@@ -152,7 +150,7 @@ function CategoriesSection() {
 export function SettingsPage() {
   return (
     <div className="space-y-10">
-      <h1 className="text-2xl font-semibold">Configurações</h1>
+      <h1 className="font-display text-2xl italic text-ink">Configurações</h1>
       <AccountsSection />
       <CategoriesSection />
     </div>

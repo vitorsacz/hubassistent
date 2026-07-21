@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/instrument-serif": "^5.1.0",
     "@hookform/resolvers": "^3.9.1",
     "@hubassistent/shared-types": "workspace:*",
     "@tanstack/react-query": "^5.62.7",

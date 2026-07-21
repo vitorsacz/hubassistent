@@ -9,6 +9,7 @@ export function DashboardPage() {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+  const monthLabel = now.toLocaleDateString("pt-BR", { month: "long" });
 
   const { data: transactions } = useTransactions({
     dateFrom: monthStart,
@@ -28,25 +29,27 @@ export function DashboardPage() {
   }, [transactions]);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Visão geral do mês</h1>
+    <div className="space-y-8">
+      <h1 className="font-display text-2xl italic text-ink">Visão geral de {monthLabel}</h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">Entradas</p>
-          <p className="mt-1 text-2xl font-semibold text-emerald-400">{formatCurrency(income)}</p>
+      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+        <div className="rounded border border-line bg-app p-5">
+          <p className="text-xs uppercase tracking-wide text-muted">Entradas</p>
+          <p className="tabular mt-2 font-display text-3xl italic text-ink">{formatCurrency(income)}</p>
         </div>
-        <div className="rounded-xl bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">Saídas</p>
-          <p className="mt-1 text-2xl font-semibold text-red-400">{formatCurrency(expense)}</p>
+        <div className="rounded border border-line bg-app p-5">
+          <p className="text-xs uppercase tracking-wide text-muted">Saídas</p>
+          <p className="tabular mt-2 font-display text-3xl italic text-ink">{formatCurrency(expense)}</p>
         </div>
-        <div className="rounded-xl bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">Saldo</p>
-          <p className="mt-1 text-2xl font-semibold">{formatCurrency(income - expense)}</p>
+        <div className="rounded border border-transparent bg-accent-soft p-5">
+          <p className="text-xs uppercase tracking-wide text-muted">Saldo</p>
+          <p className="tabular mt-2 font-display text-3xl italic text-ink">
+            {formatCurrency(income - expense)}
+          </p>
         </div>
       </div>
 
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-muted">
         Próximo passo: faturas/contas a pagar e um extrato mensal detalhado.
       </p>
     </div>
