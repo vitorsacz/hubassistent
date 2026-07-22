@@ -4,6 +4,7 @@ import { RegisterPage } from "@/features/auth/register-page";
 import { DashboardPage } from "@/features/dashboard/dashboard-page";
 import { TransactionsPage } from "@/features/transactions/transactions-page";
 import { CardsPage } from "@/features/cards/cards-page";
+import { InvoicesPage } from "@/features/invoices/invoices-page";
 import { SettingsPage } from "@/features/settings/settings-page";
 import { ProtectedRoute } from "@/routes/protected-route";
 import { Layout } from "@/components/layout";
@@ -19,6 +20,7 @@ export function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/cards" element={<CardsPage />} />
+            <Route path="/invoices" element={<InvoicesPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>

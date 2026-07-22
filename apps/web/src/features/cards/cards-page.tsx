@@ -53,6 +53,11 @@ export function CardsPage() {
         </div>
 
         <div>
+          <label className={fieldLabel}>Banco</label>
+          <input type="text" placeholder="Nubank" className={fieldInput} {...register("bank")} />
+        </div>
+
+        <div>
           <label className={fieldLabel}>Conta vinculada</label>
           <select className={fieldInput} {...register("accountId", { setValueAs: (v) => v || undefined })}>
             <option value="">Nenhuma</option>
@@ -116,6 +121,7 @@ export function CardsPage() {
               <div>
                 <p className="font-medium text-ink">{card.name}</p>
                 <p className="mt-0.5 text-sm text-muted">
+                  {card.bank ? `${card.bank} · ` : ""}
                   {card.type === "CREDIT" ? "Crédito" : "Débito"}
                   {card.limit
                     ? ` · limite ${Number(card.limit).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`

@@ -5,12 +5,14 @@ import { createTransactionSchema, type CreateTransactionInput } from "@hubassist
 import type { Account } from "@/features/accounts/api";
 import type { Card } from "@/features/cards/api";
 import type { Category } from "@/features/categories/api";
+import type { Invoice } from "@/features/invoices/api";
 import type { Transaction } from "./api";
 
 interface TransactionFormProps {
   accounts: Account[];
   cards: Card[];
   categories: Category[];
+  invoices: Invoice[];
   editing: Transaction | null;
   onSubmit: (input: CreateTransactionInput) => void;
   onCancel: () => void;
@@ -36,6 +38,7 @@ function blankDefaults(): CreateTransactionInput {
     notes: undefined,
     accountId: undefined,
     cardId: undefined,
+    invoiceId: undefined,
     categoryId: undefined,
   };
 }
@@ -44,6 +47,7 @@ export function TransactionForm({
   accounts,
   cards,
   categories,
+  invoices,
   editing,
   onSubmit,
   onCancel,
@@ -72,6 +76,7 @@ export function TransactionForm({
         notes: editing.notes ?? undefined,
         accountId: editing.accountId ?? undefined,
         cardId: editing.cardId ?? undefined,
+        invoiceId: editing.invoiceId ?? undefined,
         categoryId: editing.categoryId ?? undefined,
       });
     } else {
@@ -172,6 +177,20 @@ export function TransactionForm({
           ))}
         </select>
       </div>
+
+      {watch("method") === "CREDIT" && (
+        <div>
+          <label className={fieldLabel}>Fatura</label>
+          <select className={fieldInput} {...register("invoiceId", { setValueAs: (v) => v || undefined })}>
+            <option value="">Nenhuma</option>
+            {invoices.map((inv) => (
+              <option key={inv.id} value={inv.id}>
+                {inv.card?.name ?? "—"} · {new Date(inv.referenceMonth).toLocaleDateString("pt-BR", { month: "short", year: "numeric", timeZone: "UTC" })}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="col-span-full flex gap-3">
         <button

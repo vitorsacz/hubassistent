@@ -21,6 +21,8 @@ export interface Transaction {
   description: string;
   date: string;
   notes: string | null;
+  installmentNumber: number | null;
+  installmentTotal: number | null;
   source: TransactionSource;
   createdAt: string;
 }

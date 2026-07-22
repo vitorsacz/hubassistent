@@ -9,6 +9,7 @@ import { AccountsModule } from "./modules/accounts/accounts.module";
 import { CardsModule } from "./modules/cards/cards.module";
 import { CategoriesModule } from "./modules/categories/categories.module";
 import { TransactionsModule } from "./modules/transactions/transactions.module";
+import { InvoicesModule } from "./modules/invoices/invoices.module";
 import { HealthController } from "./modules/health/health.controller";
 
 @Module({
@@ -23,6 +24,7 @@ import { HealthController } from "./modules/health/health.controller";
     CardsModule,
     CategoriesModule,
     TransactionsModule,
+    InvoicesModule,
   ],
   controllers: [HealthController],
   providers: [

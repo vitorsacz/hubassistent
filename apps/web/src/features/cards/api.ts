@@ -7,6 +7,7 @@ export interface Card {
   accountId: string | null;
   name: string;
   brand: string | null;
+  bank: string | null;
   type: CardType;
   closingDay: number | null;
   dueDay: number | null;

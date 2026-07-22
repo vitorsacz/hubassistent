@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { to: "/", label: "Dashboard", end: true },
   { to: "/transactions", label: "Transações" },
   { to: "/cards", label: "Cartões" },
+  { to: "/invoices", label: "Faturas" },
   { to: "/settings", label: "Configurações" },
 ];
 

@@ -47,6 +47,7 @@ model Card {
   account    Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
   name       String
   brand      String?
+  bank       String?
   type       CardType
   closingDay Int?
   dueDay     Int?
@@ -92,6 +93,9 @@ model Transaction {
   description String
   date        DateTime
   notes       String?
+
+  installmentNumber Int?
+  installmentTotal  Int?
 
   source     TransactionSource @default(MANUAL)
   externalId String?

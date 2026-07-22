@@ -12,6 +12,8 @@ export const createTransactionSchema = z.object({
   cardId: z.string().optional(),
   invoiceId: z.string().optional(),
   categoryId: z.string().optional(),
+  installmentNumber: z.number().int().positive().optional(),
+  installmentTotal: z.number().int().positive().optional(),
 });
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 

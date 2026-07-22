@@ -3,6 +3,7 @@ import type { CreateTransactionInput } from "@hubassistent/shared-types";
 import { useAccounts } from "@/features/accounts/api";
 import { useCards } from "@/features/cards/api";
 import { useCategories } from "@/features/categories/api";
+import { useInvoices } from "@/features/invoices/api";
 import {
   useCreateTransaction,
   useDeleteTransaction,
@@ -25,6 +26,7 @@ export function TransactionsPage() {
   const { data: accounts = [] } = useAccounts();
   const { data: cards = [] } = useCards();
   const { data: categories = [] } = useCategories();
+  const { data: invoices = [] } = useInvoices();
 
   const createTransaction = useCreateTransaction();
   const updateTransaction = useUpdateTransaction();
@@ -58,6 +60,7 @@ export function TransactionsPage() {
         accounts={accounts}
         cards={cards}
         categories={categories}
+        invoices={invoices}
         editing={editing}
         onSubmit={handleSubmit}
         onCancel={() => setEditing(null)}

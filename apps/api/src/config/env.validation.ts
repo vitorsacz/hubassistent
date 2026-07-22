@@ -6,6 +6,7 @@ export const envSchema = z.object({
   JWT_REFRESH_SECRET: z.string().min(1),
   PORT: z.coerce.number().default(3000),
   CORS_ORIGIN: z.string().default("http://localhost:5173"),
+  GEMINI_API_KEY: z.string().min(1),
 });
 
 export type Env = z.infer<typeof envSchema>;
